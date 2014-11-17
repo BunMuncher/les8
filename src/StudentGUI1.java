@@ -1,11 +1,14 @@
 
+import javax.swing.JOptionPane;
+
+
 public class StudentGUI1 extends javax.swing.JFrame {
 
-    /**
-     * Creates new form StudentGUI
-     */
+    Student s[];
+    int size, currentstudent;
     public StudentGUI1() {
         initComponents();
+        s = new Student[10];
     }
 
     
@@ -65,6 +68,11 @@ public class StudentGUI1 extends javax.swing.JFrame {
         txtt3.setEditable(false);
 
         txtavg.setEditable(false);
+        txtavg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtavgActionPerformed(evt);
+            }
+        });
 
         btnAdd.setText("Add");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -81,12 +89,32 @@ public class StudentGUI1 extends javax.swing.JFrame {
         });
 
         btnfirst.setText("<<");
+        btnfirst.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnfirstActionPerformed(evt);
+            }
+        });
 
         btnprev.setText("<");
+        btnprev.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnprevActionPerformed(evt);
+            }
+        });
 
         btnnext.setText(">");
+        btnnext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnnextActionPerformed(evt);
+            }
+        });
 
         btnlast.setText(">>");
+        btnlast.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnlastActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Count");
 
@@ -196,26 +224,82 @@ public class StudentGUI1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        StudentPopup spop = new StudentPopup(this,true);
+        if(size>=10){
+            JOptionPane.showMessageDialog(this,"There are already 10 students. You cannot add anymore.");
+            
+        }
+        else{
+        StudentPopup spop = new StudentPopup(this, true);
         spop.setModal(true);
         spop.setLocationRelativeTo(this);
         spop.setVisible(true);
         
-        String name = spop.getName();
-        txtname.setText(name);
-        int[] marks = spop.getMarks();
-        txtt1.setText(""+marks[0]);
-        txtt2.setText(""+marks[1]);
-        txtt3.setText(""+marks[2]);
+        Student temp = spop.getStudent();
+            
+            String em = temp.validateData();
+            
+            if(em == null)
+            {
+                s[size] = temp;
+                currentstudent = size;
+                size++;
+                showStudent();
+            }
+            else
+                JOptionPane.showMessageDialog(this,em); 
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
-        // TODO add your handling code here:
+       StudentPopup spop = new StudentPopup(this, true);//popup form
+        spop.setForm(s[currentstudent]);//put student into form
+        spop.setModal(true);//take control
+        spop.setLocationRelativeTo(this);//over this one
+        spop.setVisible(true);
+        
+        Student temp = spop.getStudent();
+            
+            String em = temp.validateData();
+            
+            if(em == null)
+            {
+                s[currentstudent] = temp;
+                showStudent();
+            }
+            else
+                JOptionPane.showMessageDialog(this,em);
     }//GEN-LAST:event_btnModifyActionPerformed
 
     private void txtt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtt1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtt1ActionPerformed
+
+    private void btnprevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnprevActionPerformed
+       if (currentstudent > 0){
+            currentstudent--;
+            showStudent();
+        }
+    }//GEN-LAST:event_btnprevActionPerformed
+
+    private void btnfirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnfirstActionPerformed
+       currentstudent=0;
+        showStudent();
+    }//GEN-LAST:event_btnfirstActionPerformed
+
+    private void btnnextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnnextActionPerformed
+        if (currentstudent < size-1 && currentstudent > -1){
+            currentstudent++;
+            showStudent();
+        }
+    }//GEN-LAST:event_btnnextActionPerformed
+
+    private void btnlastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlastActionPerformed
+       currentstudent=size-1;
+        showStudent();
+    }//GEN-LAST:event_btnlastActionPerformed
+
+    private void txtavgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtavgActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtavgActionPerformed
 
     /**
      * @param args the command line arguments
@@ -246,6 +330,15 @@ public class StudentGUI1 extends javax.swing.JFrame {
                 new StudentGUI1().setVisible(true);
             }
         });
+    }
+    public void showStudent(){
+        txtname.setText(s[currentstudent].getName());
+        txtt1.setText(""  + s[currentstudent].getMark(1));
+        txtt2.setText(""  + s[currentstudent].getMark(2));
+        txtt3.setText(""  + s[currentstudent].getMark(3));
+        txtavg.setText("" + s[currentstudent].getAverage());
+        lblCount.setText("" + size);
+        lblIndex.setText("" + (currentstudent + 1));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
