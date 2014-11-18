@@ -225,7 +225,7 @@ public class StudentGUI1 extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         if(size>=10){
-            JOptionPane.showMessageDialog(this,"There are already 10 students. You cannot add anymore.");
+            JOptionPane.showMessageDialog(this,"Max 10 students");
             
         }
         else{
@@ -248,9 +248,9 @@ public class StudentGUI1 extends javax.swing.JFrame {
             else
                 JOptionPane.showMessageDialog(this,em); 
     }//GEN-LAST:event_btnAddActionPerformed
-
+    }
     private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
-       StudentPopup spop = new StudentPopup(this, true);//popup form
+        StudentPopup spop = new StudentPopup(this, true);//popup form
         spop.setForm(s[currentstudent]);//put student into form
         spop.setModal(true);//take control
         spop.setLocationRelativeTo(this);//over this one
